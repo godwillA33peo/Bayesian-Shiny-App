@@ -3,3 +3,67 @@ title: "README"
 output: html_document
 ---
 
+# Interactive Bayesian Inference Explorer
+
+An interactive Shiny web application for exploring fundamental concepts in Bayesian statistics. This app is designed to build intuition for how prior beliefs combine with observed data to form a posterior distribution.
+
+I am developing this project as part of the 'Introduction to Bayesian Modelling' module for my MSc in Health Data Science. It serves as a practical portfolio piece to demonstrate my growing skills in R, Shiny, and applied Bayesian methods on my journey to becoming a health data scientist.
+
+
+## 🎯 Features
+
+This application allows you to interactively explore several common Bayesian models.
+
+### Current Features
+
+  * **Binomial Model (Discrete Prior):**
+      * Interactively set the number of trials ($n$) and successes ($x$) from observed binomial data.
+      * Define a **discrete prior distribution** by specifying possible values for the proportion ($\theta$) and their associated probabilities.
+      * Instantly view the resulting Prior, Likelihood, and Posterior distributions in a clear table.
+      * Visualize the prior and posterior distributions to see the "Bayesian update" in action, powered by the `TeachBayes` package.
+
+### 🚧 Roadmap (Planned Features)
+
+My goal is to expand this app into a more comprehensive Bayesian toolkit:
+
+  * **Binomial Model (Conjugate Prior):**
+
+      * Implement the **Beta-Binomial** model.
+      * Allow users to set prior beliefs using the Beta($\alpha$, $\beta$) distribution's parameters.
+      * Visualize the continuous prior, likelihood, and posterior distributions on a single plot.
+
+  * **Poisson Model (Conjugate Prior):**
+
+      * Add a new tab for Poisson data (e.g., event counts over time).
+      * Implement the **Gamma-Poisson** model.
+      * Allow users to specify a Gamma($\alpha$, $\beta$) prior for the rate parameter $\lambda$.
+
+  * **Normal Model (Conjugate Priors):**
+
+      * Add a tab for continuous data from a Normal distribution.
+      * Explore a Normal prior for the mean $\mu$ (with known variance).
+      * *Stretch Goal:* Implement the Normal-Inverse-Gamma prior for an unknown mean $\mu$ and unknown variance $\sigma^2$.
+
+  * **MCMC Integration:**
+
+      * Add a simple demonstration of a Markov Chain Monte Carlo (MCMC) sampler to show how posterior distributions can be approximated when an exact analytical solution (like in conjugate models) isn't available.
+
+-----
+
+## 🛠️ Technical Stack
+
+  * **Language:** R
+  * **Framework:** [Shiny](https://shiny.posit.co/)
+  * **Bayesian Core:** [TeachBayes](https://bayesball.github.io/TeachBayes/) (for discrete Bayesian tabulation and plotting functions)
+  * **Plotting:** [ggplot2](https://ggplot2.tidyverse.org/) (via `TeachBayes`) & [plotly](https://plotly.com/r/)
+  * **Data Manipulation:** [dplyr](https://dplyr.tidyverse.org/) (implied by `magrittr` pipe `%>%`)
+
+-----
+
+## 🧑‍💻 About Me
+
+My name is Godwill Zulu, and I am a candidate for the MSc in Health Data Science with the University of Galway (Ireland). I'm passionate about leveraging statistical modeling and machine learning to derive actionable insights from complex health data. This project is one step in my journey to build a robust skill set for a career that bridges the gap between data science and healthcare.
+
+Connect with me on [**LinkedIn**](linkedin.com/in/godwill-zulu/)\!
+
+-----
