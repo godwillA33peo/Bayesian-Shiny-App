@@ -64,6 +64,6 @@ My goal is to expand this app into a more comprehensive Bayesian toolkit:
 
 My name is Godwill Zulu, and I am a candidate for the MSc in Health Data Science with the University of Galway (Ireland). I'm passionate about leveraging statistical modeling and machine learning to derive actionable insights from complex health data. This project is one step in my journey to build a robust skill set for a career that bridges the gap between data science and healthcare.
 
-Connect with me on [**LinkedIn**] (https://linkedin.com/in/godwill-zulu/)\!
+Connect with me on [**LinkedIn**] ( https://linkedin.com/in/godwill-zulu/ )\!
 
 -----
