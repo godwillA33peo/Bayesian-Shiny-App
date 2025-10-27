@@ -10,7 +10,7 @@ library(dplyr)
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(
-  theme = bs_theme(bootswatch = "minty"),
+  #theme = bs_theme(bootswatch = "minty"),
   "Bayesian Explorer",
   tabPanel(" Binomial Data",
            
@@ -32,23 +32,42 @@ ui <- navbarPage(
              textInput("discrete_thetas", "Enter Theta Values (csv):", 
                        value = "0.05, 0.2, 0.35, 0.5, 0.65"),
              textInput("prior", "Enter prior Values (sum to 1):", 
-                       value = "0.05, 0.05, 0.35, 0.5, 0.05"),
-             sliderInput("c_level", "Confidence Interval", min=0.5, max = 0.99,
-                         value=0.95, step=0.01)
+                       value = "0.05, 0.05, 0.35, 0.5, 0.05")
            ),
-           
-           mainPanel( width = 8,
-                      layout_columns(
-                        column(
-                          tableOutput("summary_table"),  plotOutput("prior_plot", height = "60%",
-                                                                  width = "230%"), width= 5
+           #My main panel is divided into 4 main squares  two fluid rows and two columns in each row
+           mainPanel(
+             fluidRow(
+               column(width = 6,
+                      h4("Prior Distribution"),
+                      plotOutput("prior_plot")
+                      ),
+               column(width = 6,
+                      h4("Prior vs Posterior Distribution"),
+                      plotOutput("post_plot"))
+             ),
+             fluidRow( # this row outputs 4 or 3 more squares for the estimates and simulations
+               column(width = 6,
+                      conditionalPanel(
+                        condition = "input$prior_type == 'Continuous (Beta)'",
+                        fluidRow(
+                          h4("Data table"),
+                          column(width = 6,
+                                 tableOutput("summary_table"))
                         ),
-                        column(
-                          plotOutput("post_plot"), width = 12
-                        )
-                        
+                        fluidRow()#code ends here for ,y 4 small boxes for exstimates (reminder)
+                      )),
+               column(width = 6,
+                      h4("Credible Interval"),
+                      conditionalPanel(
+                        condition = "input$prior_type == 'Continuous (Beta)'",
+                        sliderInput("c_level", "Confidence Interval", min=0.5, max = 0.99,
+                                    value=0.95, step=0.01),
+                        plotOutput("conf_int")
                       )
-           ),
+               )
+             )
+           )
+           
            
   ),
   tabPanel("Poison data",
@@ -155,9 +174,41 @@ server <- function(input, output){
   })
   
   #Plot for the posterior vs the prior using the prior_post_plot function 
-  #output$post_plot <- renderPlot(
+  output$post_plot <- renderPlot({
     
-  #)
+    results <- data_table()
+    
+    #posterior plot for a continuous prior
+    if(results$type == "continuous"){
+      
+      cont_data <- results$data
+      prior_par <- c(cont_data[1, 2], cont_data[1, 3])
+      post_par <- c(cont_data[3, 2], cont_data[3, 3])
+      post_prior_plot <- beta_prior_post(prior_par, post_par)
+      return(post_prior_plot)
+      
+    }else{ # condition for discrete prior
+      post_data <- results$data
+      dis_post <- prior_post_plot(post_data)
+      return(dis_post)
+    }
+    
+  })
+  
+  output$conf_int <- renderPlot({
+    results <- data_table()
+    
+    if(results$type == "continuous"){
+      
+      ci <- input$c_level
+      cont_data <- results$data
+      prior_par <- c(cont_data[1, 2], cont_data[1, 3])
+      post_par <- c(cont_data[3, 2], cont_data[3, 3])
+      credible_interval <- beta_interval(ci, post_par)
+      return(credible_interval)
+      
+    }
+  })
 }
 ################# End of Binomial-Beta##################################################
 

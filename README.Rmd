@@ -22,16 +22,18 @@ This application allows you to interactively explore several common Bayesian mod
       * Instantly view the resulting Prior, Likelihood, and Posterior distributions in a clear table.
       * Visualize the prior and posterior distributions to see the "Bayesian update" in action, powered by the `TeachBayes` package.
 
-### 🚧 Roadmap (Planned Features)
 
-My goal is to expand this app into a more comprehensive Bayesian toolkit:
 
   * **Binomial Model (Conjugate Prior):**
 
       * Implement the **Beta-Binomial** model.
       * Allow users to set prior beliefs using the Beta($\alpha$, $\beta$) distribution's parameters.
       * Visualize the continuous prior, likelihood, and posterior distributions on a single plot.
+      (Left with point estimates and simulations)
+      
+### 🚧 Roadmap (Planned Features)
 
+My goal is to expand this app into a more comprehensive Bayesian toolkit:
   * **Poisson Model (Conjugate Prior):**
 
       * Add a new tab for Poisson data (e.g., event counts over time).
