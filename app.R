@@ -7,11 +7,13 @@ library(ggplot2)
 library(plotly)
 library(tidyr)
 library(dplyr)
+library(shinythemes)
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(
   #theme = bs_theme(bootswatch = "minty"),
-  "Bayesian Explorer",
+  title = "Bayesian Explorer",
+  theme = shinytheme("readable"),
   tabPanel(" Binomial Data",
            
            sidebarPanel(
@@ -50,11 +52,33 @@ ui <- navbarPage(
                       conditionalPanel(
                         condition = "input$prior_type == 'Continuous (Beta)'",
                         fluidRow(
-                          h4("Data table"),
-                          column(width = 6,
-                                 tableOutput("summary_table"))
+                          
+                          column(width = 3,
+                                 h4("Data table"),
+                                 tableOutput("summary_table")),
+                          column(width = 9, 
+                                 h4("Point Estimates")
+                                 )
                         ),
-                        fluidRow()#code ends here for ,y 4 small boxes for exstimates (reminder)
+                        fluidRow( # container for the 3rd quadrant with simulated data and inference from the simulations
+                          column(width=12,
+                                 conditionalPanel(
+                                   condition = "input$prior_type == 'Continuous (Beta)'",
+                                   fluidRow(
+                                   sliderInput(inputId = "n_sims", label = "Number of simulations", min = 0,
+                                               max = 100000, step = 10000 , value = 10000),
+                                   textOutput() # single line tetx output for the point estimate for simulated data
+                                  
+                                   ),
+                                   fluidRow(
+                                    sliderInput("sim_ci_level", "Simulated Data Conf Interval",
+                                                 min = 0.5, max = 0.99, step = 0.1, value=0.95), 
+                                    textOutput()#single line out put for confidence interval from the simulated data
+                                   ),
+                                   fluidRow()
+                                )
+                          )
+                        )# end of container for the subdivided quadrant with inference for simulated data 
                       )),
                column(width = 6,
                       h4("Credible Interval"),
@@ -71,11 +95,12 @@ ui <- navbarPage(
            
   ),
   tabPanel("Poison data",
-           
-  ),
+           ),
   tabPanel("Normal Data",
+           ),
+  tabPanel("MCMC",
            
-  )
+           )
 )
 
 # Define server logic required to draw a histogram
@@ -99,7 +124,7 @@ server <- function(input, output){
         b_post <- b_prior + n_data - k_data
         
         beta_df <- data.frame(
-          Distribution = c("Prior", "Data", "Posterior"),
+          Dist = c("Prior", "Data", "Post"),
           Alpha = c(a_prior, k_data, a_post),
           Beta =c(b_prior, n_data - k_data, b_post)
         )
@@ -209,6 +234,33 @@ server <- function(input, output){
       
     }
   })
+  
+  output$point_estimates <- renderText({
+    
+    cont_data <- data_table()
+    
+    if(results$type == "continuous"){
+      
+      alpha <- cont_data[3, 2]
+      beta <- cont_data[3, 3]
+      mean <- alpha / alpha + beta
+      return(mean)
+    }
+  }) # end of function for point estimates 
+  
+  output$sim_ci_level <- renderText({
+    
+    cont_data <- data_table()
+     if(results$type == "continuous"){
+       
+       shape_1 <- cont_data[3, 2]
+       shape_2 <- cont_data[3, 3]
+       mysims <- rbeta(n_sims, shape1 = shape_1, shape2 = shape_2)
+       quantile(mysims, c())
+       
+     }
+  })
+ 
 }
 ################# End of Binomial-Beta##################################################
 
