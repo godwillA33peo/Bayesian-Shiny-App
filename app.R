@@ -53,27 +53,30 @@ ui <- navbarPage(
                         condition = "input$prior_type == 'Continuous (Beta)'",
                         fluidRow(
                           
-                          column(width = 3,
+                          column(width = 12,
                                  h4("Data table"),
-                                 tableOutput("summary_table")),
-                          column(width = 9, 
-                                 h4("Point Estimates")
-                                 )
+                                 tableOutput("summary_table"))
+                          #column(width = 9,
+                           #      h4("Point Estimates")
+                            #     )
                         ),
                         fluidRow( # container for the 3rd quadrant with simulated data and inference from the simulations
                           column(width=12,
                                  conditionalPanel(
                                    condition = "input$prior_type == 'Continuous (Beta)'",
                                    fluidRow(
+                                   #condition = "input$prior_type == 'Continuous (Beta)'",
                                    sliderInput(inputId = "n_sims", label = "Number of simulations", min = 0,
-                                               max = 100000, step = 10000 , value = 10000),
-                                   textOutput() # single line tetx output for the point estimate for simulated data
+                                               max = 100000, step = 10000 , value = 10000)
+                                   #textOutput("point_estimates") # single line tetx output for the point estimate for simulated data
                                   
                                    ),
                                    fluidRow(
-                                    sliderInput("sim_ci_level", "Simulated Data Conf Interval",
-                                                 min = 0.5, max = 0.99, step = 0.1, value=0.95), 
-                                    textOutput()#single line out put for confidence interval from the simulated data
+                                    sliderInput(inputId = "sim_ci_level", label = "level",
+                                                 min = 0.5, max = 0.99, step = 0.01, value=0.95),
+                                    #sliderInput(inputId = "sim_ci_level_ub", label = "Upper Bound for CI", min = 0.5, max = 0.95, 
+                                        #        value = 6)
+                                    textOutput("sim_ci_level")#single line out put for confidence interval from the simulated data
                                    ),
                                    fluidRow()
                                 )
@@ -126,7 +129,7 @@ server <- function(input, output){
         beta_df <- data.frame(
           Dist = c("Prior", "Data", "Post"),
           Alpha = c(a_prior, k_data, a_post),
-          Beta =c(b_prior, n_data - k_data, b_post)
+          Beta =c(b_prior,  n_data - k_data, b_post)
         )
         return(list(type="continuous", data = (beta_df)))
         
@@ -237,30 +240,45 @@ server <- function(input, output){
   
   output$point_estimates <- renderText({
     
-    cont_data <- data_table()
+    results <- data_table()
     
     if(results$type == "continuous"){
       
-      alpha <- cont_data[3, 2]
-      beta <- cont_data[3, 3]
-      mean <- alpha / alpha + beta
-      return(mean)
+      cont_data <- results$data
+      alpha <- as.numeric(cont_data[3, 2])
+      beta <- as.numeric(cont_data[3, 3])
+      mean <- as.numeric(alpha / alpha + beta)
+      sprintf("The point estimate is [%.4f, %.4f].", mean)
+      
     }
   }) # end of function for point estimates 
   
   output$sim_ci_level <- renderText({
     
-    cont_data <- data_table()
+    results <- data_table()
+    
      if(results$type == "continuous"){
+       
+       cont_data <- results$data
+       n <- input$n_sims
+       ci_level <- input$sim_ci_level
        
        shape_1 <- cont_data[3, 2]
        shape_2 <- cont_data[3, 3]
-       mysims <- rbeta(n_sims, shape1 = shape_1, shape2 = shape_2)
-       quantile(mysims, c())
+       mysims <- rbeta(n, shape1 = shape_1, shape2 = shape_2)
+       alpha <- 1 - ci_level
+       lower_prob <- alpha / 2
+       upper_prob <- 1 - (alpha / 2)
+       lower_bound <- quantile(mysims, probs = lower_prob) # should we limit only to the 95% confidence interval if not whats the logic ??
+       upper_bound <- quantile(mysims, probs = upper_prob)
        
+       sprintf("The %.0f%% credible interval for the point estimate is [%.3f, %.3f]",
+               ci_level * 100,
+               lower_bound,
+               upper_bound)
      }
   })
- 
+  
 }
 ################# End of Binomial-Beta##################################################
 
