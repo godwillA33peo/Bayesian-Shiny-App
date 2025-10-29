@@ -24,7 +24,7 @@ ui <- navbarPage(
              sliderInput("x_successes", "No of successes (x):", min = 0, max = 100, 
                          value = 6),
              "Prior Beliefs (Prior)",
-             radioButtons("prior_type", "Type of variable (cont/discrete)",
+             radioButtons("prior_type", "Type of prior (cont/discrete)",
                           choices = c("Continuous (Beta)", "Discrete"), 
                         selected = "Continuous (Beta)"),
              "Beta Distribution Parameters",
@@ -98,6 +98,32 @@ ui <- navbarPage(
            
   ),
   tabPanel("Poison data",
+           sidebarPanel(
+             width = 4,
+             radioButtons("prior_type", "Type of Prior (cont/discrete)",
+                          choices = c("Continuous (Gamma)", "Discrete"), 
+                          selected = "Continuous (Gamma)"),
+             sliderInput(inputId = "mean", label = "Prior Mean",
+                         min = 1, max = 100, step = 1, value = 10),
+             sliderInput(inputId = "sd", label = "Prior Sd", 
+                         min = 1, max = 100, step = 1, value = 5),
+             sliderInput(inputId = "n_obs", label = "Number of Data Points observed",
+                         min = 1, max = 100, step=1, value = 10),
+             textInput(inputId = "cases_per_data_point", "Number of Cases per data point (csv):",
+                       value = "24, 56, 75, 23, 45, 13")
+             
+           ), # end of slider panel code
+           mainPanel(
+             fluidRow(
+               column(width = 6,
+                      h4("Prior Distribution"),
+                      plotOutput("pois_priorPlot")
+               )
+               #column(width = 6,
+                     # h4("Prior vs Posterior Distribution"),
+                     # plotOutput("post_plot"))
+             )
+           ) #end of main panel code
            ),
   tabPanel("Normal Data",
            ),
@@ -278,9 +304,35 @@ server <- function(input, output){
                upper_bound)
      }
   })
+################# End of Binomial-Beta################################################## 
   
+#### Poison server functions
+  
+  output$pois_prior <- reactive({
+    
+    
+    
+  })
+  output$gamma_priorPlot <- renderPlot({
+    
+    
+   mu_0 <- input$mean
+   sd_0 <- input$sd
+   my_shape <- (mu_0^2)/(sd_0^2)
+   my_rate <- mu_0/(sd_0^2)
+   data <- seq(0, 5, length =50)
+   prior_plot_data <- dgamma(data, shape = my_shape, rate = my_rate)
+   prior_plot <- plot(data, prior_plot_data, type = "l", col = "blue", lwd= 3)
+   return(prior_plot)
+  
+})
+
+  output$gamma_prior
+
 }
-################# End of Binomial-Beta##################################################
+
+
+###
 
 
 
