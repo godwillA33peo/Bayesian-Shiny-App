@@ -15,7 +15,7 @@ ui <- navbarPage(
   title = "Bayesian Explorer",
   theme = shinytheme("readable"),
   tabPanel(" Binomial Data",
-           
+         sidebarLayout(  
            sidebarPanel(
              width = 4,
              "Observed Data",
@@ -24,7 +24,7 @@ ui <- navbarPage(
              sliderInput("x_successes", "No of successes (x):", min = 0, max = 100, 
                          value = 6),
              "Prior Beliefs (Prior)",
-             radioButtons("prior_type", "Type of prior (cont/discrete)",
+             selectInput("prior_type", "Type of prior (cont/discrete)",
                           choices = c("Continuous (Beta)", "Discrete"), 
                         selected = "Continuous (Beta)"),
              "Beta Distribution Parameters",
@@ -94,7 +94,7 @@ ui <- navbarPage(
                )
              )
            )
-           
+         )
            
   ),
   tabPanel("Poison data",
@@ -117,7 +117,7 @@ ui <- navbarPage(
              fluidRow(
                column(width = 6,
                       h4("Prior Distribution"),
-                      plotOutput("pois_priorPlot")
+                      plotOutput("gamma_priorPlot")
                )
                #column(width = 6,
                      # h4("Prior vs Posterior Distribution"),
@@ -127,8 +127,31 @@ ui <- navbarPage(
            ),
   tabPanel("Normal Data",
            ),
-  tabPanel("MCMC",
-           
+  tabPanel("RJags Simulations",
+           sidebarLayout(
+             sidebarPanel(
+               width = 4, 
+               fileInput("file", "Dataset (csv file)"), #uploading the csv file (data)
+               #selectInput("feature", "Feature of interest from the dataset"), # fro selecting the column of interest
+               selectInput("mcmc_dist_type", "Select Model",
+                           choices = c("Binomial", "Normal", "Poison"), selected = "none"),
+               conditionalPanel(
+                 condition = "input.mcmc_dist_type ==  'Binomial'",
+                   numericInput("bin_k", "Successes (k):", value = 456)
+                 ),
+               
+               conditionalPanel(
+                 condition = "input.mcmc_dist_type == 'Normal'",
+                   numericInput("prior_mu", "Prior Mean:", value = 10)
+                 ),
+               
+               conditionalPanel(
+                 condition = "input.mcmc_dist_type == 'Poison'"
+                 )
+               
+             ),
+             mainPanel()
+           )
            )
 )
 
@@ -313,21 +336,22 @@ server <- function(input, output){
     
     
   })
+  
   output$gamma_priorPlot <- renderPlot({
     
     
-   mu_0 <- input$mean
-   sd_0 <- input$sd
-   my_shape <- (mu_0^2)/(sd_0^2)
-   my_rate <- mu_0/(sd_0^2)
-   data <- seq(0, 5, length =50)
-   prior_plot_data <- dgamma(data, shape = my_shape, rate = my_rate)
-   prior_plot <- plot(data, prior_plot_data, type = "l", col = "blue", lwd= 3)
-   return(prior_plot)
+    mu_0 <- input$mean
+    sd_0 <- input$sd
+    my_shape <- (mu_0^2)/(sd_0^2)
+    my_rate <- mu_0/(sd_0^2)
+    data <- seq(0, 5, length =50)
+    prior_plot_data <- dgamma(data, shape = my_shape, rate = my_rate)
+    prior_plot <- plot(data, prior_plot_data, type = "l", col = "blue")
+    return(prior_plot)
   
 })
 
-  output$gamma_prior
+  #output$gamma_prior
 
 }
 
