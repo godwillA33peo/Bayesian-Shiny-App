@@ -90,6 +90,7 @@ ui <- navbarPage(
                         sliderInput("c_level", "Confidence Interval", min=0.5, max = 0.99,
                                     value=0.95, step=0.01),
                         plotOutput("conf_int")
+                    
                       )
                )
              )
@@ -134,24 +135,25 @@ ui <- navbarPage(
                fileInput("file", "Dataset (csv file)"), #uploading the csv file (data)
                #selectInput("feature", "Feature of interest from the dataset"), # fro selecting the column of interest
                selectInput("mcmc_dist_type", "Select Model",
-                           choices = c("Binomial", "Normal", "Poison"), selected = "none"),
-               conditionalPanel(
-                 condition = "input.mcmc_dist_type ==  'Binomial'",
-                   numericInput("bin_k", "Successes (k):", value = 456)
-                 ),
-               
-               conditionalPanel(
-                 condition = "input.mcmc_dist_type == 'Normal'",
-                   numericInput("prior_mu", "Prior Mean:", value = 10)
-                 ),
-               
-               conditionalPanel(
-                 condition = "input.mcmc_dist_type == 'Poison'"
+                           choices = c("Select model..." = "", "Binomial", "Normal", "Poisson"),
+                           selected = ""
+                      ),
+               uiOutput("model_inputs"),
+               numericInput("n_chains", "Number of chains:", value =4, min =1),
+               numericInput("n_burnin", "Burn-ib Iterations", value=5000, min =1),
+               numericInput("n_iter", "Simulations Iterations", value=10000, min =1),
+               actionButton("run_model", "Run Model")
+                  ),
+             mainPanel(
+               fluidRow(
+                 column(
+                   width = 6,
+                   textInput("model_defination", "Define your model in Bugs language:")
                  )
-               
-             ),
-             mainPanel()
-           )
+               ),
+               fluidRow()
+             )
+              )
            )
 )
 
@@ -328,18 +330,8 @@ server <- function(input, output){
      }
   })
 ################# End of Binomial-Beta################################################## 
-  
-#### Poison server functions
-  
-  output$pois_prior <- reactive({
-    
-    
-    
-  })
-  
+ 
   output$gamma_priorPlot <- renderPlot({
-    
-    
     mu_0 <- input$mean
     sd_0 <- input$sd
     my_shape <- (mu_0^2)/(sd_0^2)
@@ -348,16 +340,31 @@ server <- function(input, output){
     prior_plot_data <- dgamma(data, shape = my_shape, rate = my_rate)
     prior_plot <- plot(data, prior_plot_data, type = "l", col = "blue")
     return(prior_plot)
-  
 })
-
-  #output$gamma_prior
-
+#output$gamma_prior
+  output$model_inputs <- renderUI({
+      if (input$mcmc_dist_type == "Binomial") {
+      tagList(
+        numericInput("bin_k", "Successes (k):", value = 456),
+        numericInput("n_trails", "Number of trails (n)", value = 100),
+        numericInput("prior_alpha", "Prior Alpha", value = 10),
+        numericInput("prior_beta", "Prior Beta", value = 10)
+      )
+    } else if (input$mcmc_dist_type == "Normal") {
+      tagList(
+        numericInput("prior_mu", "Prior Mean:", value = 10),
+        numericInput("prior_sd", "Prior Standard Deviation", value = 30)
+      )
+    } else if (input$mcmc_dist_type == "Poisson") {
+      tagList(
+        numericInput("prior_lambda", "Prior Lambda (Rate):", value = 5)
+      )
+    } else {
+      # Show nothing if no model is selected
+      NULL
+    }
+  })  
+  
 }
-
-
-###
-
-
 
 shinyApp(ui = ui, server = server)
