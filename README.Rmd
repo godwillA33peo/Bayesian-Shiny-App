@@ -30,25 +30,15 @@ This application allows you to interactively explore several common Bayesian mod
       * Allow users to set prior beliefs using the Beta($\alpha$, $\beta$) distribution's parameters.
       * Visualize the continuous prior, likelihood, and posterior distributions on a single plot.
       (Left with point estimates and simulations)
-      
-### 🚧 Roadmap (Planned Features)
 
-My goal is to expand this app into a more comprehensive Bayesian toolkit:
+
   * **Poisson Model (Conjugate Prior):**
 
-      * Add a new tab for Poisson data (e.g., event counts over time).
-      * Implement the **Gamma-Poisson** model.
-      * Allow users to specify a Gamma($\alpha$, $\beta$) prior for the rate parameter $\lambda$.
 
   * **Normal Model (Conjugate Priors):**
 
-      * Add a tab for continuous data from a Normal distribution.
-      * Explore a Normal prior for the mean $\mu$ (with known variance).
-      * *Stretch Goal:* Implement the Normal-Inverse-Gamma prior for an unknown mean $\mu$ and unknown variance $\sigma^2$.
 
   * **MCMC Integration:**
-
-      * Add a simple demonstration of a Markov Chain Monte Carlo (MCMC) sampler to show how posterior distributions can be approximated when an exact analytical solution (like in conjugate models) isn't available.
 
 -----
 
