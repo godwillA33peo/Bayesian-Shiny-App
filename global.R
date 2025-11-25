@@ -1,6 +1,6 @@
 library(shiny)
 library(bslib)
-library(TeachBayes)
+source("TeachBayes.r")
 library(ggplot2)
 library(plotly)
 library(tidyr)
