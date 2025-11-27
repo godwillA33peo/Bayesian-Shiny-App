@@ -62,10 +62,10 @@ binomialUI <- function(id) {
                               ),
                               fluidRow(
                                 sliderInput(ns("sim_ci_level"), label = "level",
-                                            min = 0.5, max = 0.99, step = 0.01, value=0.95)
+                                            min = 0.5, max = 0.99, step = 0.01, value=0.95),
                                 #sliderInput(inputId = "sim_ci_level_ub", label = "Upper Bound for CI", min = 0.5, max = 0.95, 
                                 #        value = 6)
-                                #textOutput(ns("sim_ci_level"))#single line out put for confidence interval from the simulated data
+                                textOutput(ns("sim_ci_level_text"))#single line out put for confidence interval from the simulated data
                               ),
                               fluidRow()
                             )

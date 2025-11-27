@@ -145,7 +145,7 @@ binomialServer <- function(id) {
       }
     }) # end of function for point estimates 
     
-    output$sim_ci_level <- renderText({
+    output$sim_ci_level_text <- renderText({
       
       results <- data_table()
       
