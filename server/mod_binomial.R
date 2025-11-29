@@ -85,7 +85,9 @@ binomialServer <- function(id) {
         bayes_df <- results$data
         prior_data <- bayes_df %>%
           select(Theta, Prior)
-        prior_plot_dis <- prob_plot(prior_data)
+        prior_plot_dis <- ggplot(prior_data, aes(x = Theta, y = Prior)) +
+          geom_col(fill =  "red", width = 0.1) +
+          theme_grey(base_size = 18)
         
         return(prior_plot_dis) # return the histogram from the prior data
       }

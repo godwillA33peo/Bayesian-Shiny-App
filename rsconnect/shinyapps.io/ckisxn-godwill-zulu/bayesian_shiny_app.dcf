@@ -5,6 +5,6 @@ account: ckisxn-godwill-zulu
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16165442
-bundleId: 11233522
+bundleId: 11250475
 url: https://ckisxn-godwill-zulu.shinyapps.io/bayesian_shiny_app/
 version: 1
