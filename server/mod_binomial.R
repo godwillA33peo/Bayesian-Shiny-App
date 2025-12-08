@@ -173,5 +173,22 @@ binomialServer <- function(id) {
       }
     })
     
+    output$simulation_controls_ui <- renderUI({
+      
+      req(input$prior_type == "Continuous (Beta)")
+      
+      tagList(
+        fluidRow(
+          sliderInput(session$ns("n_sims"), label = "Number of simulations", min = 0,
+                      max = 100000, step = 10000 , value = 10000)
+        ),
+        fluidRow(
+          sliderInput(session$ns("sim_ci_level"), label = "level",
+                      min = 0.5, max = 0.99, step = 0.01, value=0.95),
+          textOutput(session$ns("sim_ci_level_text"))
+        )
+      )
+    })
+    
   })
 }

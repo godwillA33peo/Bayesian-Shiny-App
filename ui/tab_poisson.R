@@ -38,7 +38,12 @@ poissonUI <- function(id){
                  tableOutput(ns("summary_table"))
                  ),
           column(width = 6,
-                 h4("Confidence Interval Posterior")) # conditional only for the Gamma (Continuous) Cases
+                 conditionalPanel(
+                   condition = "input$poission_prior_type =='Continuous (Gamma)'",
+                   h4("Confidence Interval Posterior"),
+                   plotOutput(ns("ci_plot"))) # conditional only for the Gamma (Continuous) Cases
+                 )
+                 
         )
       )# end of Poi main panel
     )

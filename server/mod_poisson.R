@@ -67,6 +67,23 @@ poissonServer <- function(id) {
       }
     })
     
+    gamma_data <- reactive({
+      
+      results <- data_table()
+      
+      g_data <- results$data
+      my_shape <- g_data[1, 2]
+      my_rate <- g_data[1, 3]
+      my_shape_post <- g_data[3, 2]
+      my_rate_post <- g_data[3, 3]
+      
+      data <- seq(0, 5, length =50)
+      postx <- dgamma(data, shape = my_shape_post, rate = my_rate_post)
+      prior <- dgamma(data, shape = my_shape, rate = my_rate)
+      post_data <- data.frame(x_val = data, prior = prior, posterior = postx)
+      
+    })
+    
     output$summary_table <- renderTable({
       
       results <- data_table()
@@ -93,7 +110,16 @@ poissonServer <- function(id) {
         
       }else{
         
-        #bayes_df <- plot_data$data
+        results <- data_table()
+        g_data <- results$data
+        
+        my_shape <- g_data[1, 2]
+        my_rate <- g_data[1, 3]
+        
+        data <- seq(0, 5, length =50)
+        prior_plot_data <- dgamma(data, shape = my_shape, rate = my_rate)
+        prior_plot <- plot(data, prior_plot_data, type = "l", col = "blue", lwd=3)
+        return(prior_plot)
         
       }
         
@@ -111,9 +137,43 @@ poissonServer <- function(id) {
         
       }else{
         
+        post_data <- gamma_data()
         
+        post_plot <- ggplot(post_data, aes(x=x_val)) +
+          geom_line(aes(y=prior, color ="Prior"), linewidth = 1.5) +
+          geom_line(aes(y=posterior, color ="Posterior"), linewidth = 1.5) +
+          scale_color_manual(name = "Legend", 
+                             values = c("Prior" = "blue", "Posterior" = "red")) +
+          theme_minimal()
+        
+        return(post_plot)
         
       }
+      
+    })
+    
+    output$ci_plot <- renderPlot({
+      
+      ci_data <- gamma_data()
+      results <- data_table()
+      
+      g_data <- results$data
+      
+      my_shape <- g_data[1, 2]
+      my_rate <- g_data[1, 3]
+      my_shape_post <- g_data[3, 2]
+      my_rate_post <- g_data[3, 3]
+      
+      ci_lower <- qgamma(0.025, shape = my_shape_post, rate = my_rate_post)
+      ci_upper <- qgamma(0.975, shape = my_shape_post, rate = my_rate_post)
+      
+      ci_plot <- ggplot(data = ci_data, aes(x=x_val)) +
+        geom_line(aes(y=posterior, color ="Posterior"), linewidth = 1.5) +
+        geom_vline(xintercept = c(ci_lower, ci_upper), 
+                   linetype = "dashed", 
+                   linewidth = 1)
+      return(ci_plot)
+        
       
     })
     

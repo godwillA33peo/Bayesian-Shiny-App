@@ -71,9 +71,9 @@ binomialUI <- function(id) {
                    )# end of container for the subdivided quadrant with inference for simulated data 
                  )),
           column(width = 6,
-                 h4("Credible Interval"),
                  conditionalPanel(
                    condition = "input$prior_type == 'Continuous (Beta)'",
+                   h4("Credible Interval"),
                    sliderInput(ns("c_level"), "Confidence Interval", min=0.5, max = 0.99,
                                value=0.95, step=0.01),
                    plotOutput(ns("conf_int"))
