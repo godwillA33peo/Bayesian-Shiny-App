@@ -1,1 +1,3 @@
-renv.lock 
+.Rprofile
+renv.lock
+renv/
