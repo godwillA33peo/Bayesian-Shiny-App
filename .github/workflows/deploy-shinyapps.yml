@@ -20,7 +20,7 @@ jobs:
       
       - name: Install packages
         run: |
-          install.packages(c('rsconnect', 'shiny', 'bslib', 'ggplot2', 'plotly', 'tidyr', 'dplyr', 'shinythemes', 'learnr'))
+          install.packages(c('shiny', 'bslib', 'ggplot2', 'plotly', 'tidyr', 'dplyr', 'shinythemes', 'learnr'))
         shell: Rscript {0}
 
       - name: Authorize and deploy to ShinyApps.io
