@@ -1,0 +1,41 @@
+# Exclude TeachBayes source files (no longer needed)
+TeachBayes-master/
+
+# Git files
+.git/
+.gitignore
+
+# RStudio project files
+*.Rproj
+.Rproj.user/
+
+# Development and documentation
+README.md
+CLAUDE.md
+*.pdf
+*.docx
+
+# Local environment files
+.Renviron
+.env
+
+# Data files that aren't needed for deployment
+data/
+
+# Temporary files
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# R history and session data
+.Rhistory
+.RData
+.Rapp.history
+
+# Package development files
+.Rbuildignore
+
+# Any local test scripts
+test*.R
+scratch*.R
