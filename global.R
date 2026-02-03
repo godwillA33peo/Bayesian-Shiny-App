@@ -1,9 +1,12 @@
 library(shiny)
 library(bslib)
-library(TeachBayes)
 library(rsconnect)
 library(ggplot2)
 library(plotly)
 library(tidyr)
 library(dplyr)
 library(shinythemes)
+library(learnr)
+
+# Load custom Bayesian utility functions (extracted from TeachBayes)
+source("R/bayes_utils.R", local = TRUE)
