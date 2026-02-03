@@ -20,21 +20,22 @@ jobs:
       
       - name: Install packages
         run: |
-          install.packages(c('rsconnect', 'shiny', 'ggplot2', 'plotly', 'dplyr'))
+          install.packages(c('rsconnect', 'shiny', 'bslib', 'ggplot2', 'plotly', 'tidyr', 'dplyr', 'shinythemes', 'learnr'))
         shell: Rscript {0}
-      
+
       - name: Authorize and deploy to ShinyApps.io
         env:
           SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
           SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
           SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
         run: |
-          rsconnect::setAccountInfo(
+          library(rsconnect)
+          setAccountInfo(
             name   = Sys.getenv("SHINYAPPS_ACCOUNT"),
             token  = Sys.getenv("SHINYAPPS_TOKEN"),
             secret = Sys.getenv("SHINYAPPS_SECRET")
           )
-          rsconnect::deployApp(
+          deployApp(
             appDir = ".",
             appName = "bayesian-explorer",
             forceUpdate = TRUE

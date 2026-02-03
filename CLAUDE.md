@@ -9,9 +9,9 @@ Build intuition for how prior beliefs combine with observed data to form posteri
 ## Tech Stack
 - **Language:** R
 - **Framework:** Shiny
-- **Bayesian Core:** TeachBayes (discrete Bayesian tabulation and plotting)
-- **Plotting:** ggplot2 (via TeachBayes) and plotly
-- **Data Manipulation:** dplyr, magrittr pipes (`%>%`)
+- **Bayesian Core:** Custom utility functions (extracted from TeachBayes) in R/bayes_utils.R
+- **Plotting:** ggplot2 and plotly
+- **Data Manipulation:** dplyr, tidyr
 
 ## Current Implementation Status
 
