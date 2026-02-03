@@ -24,6 +24,31 @@ binomialUI <- function(id) {
                   value = "0.05, 0.05, 0.35, 0.5, 0.05")
       ),
       mainPanel(
+        # Helper text section
+        fluidRow(
+          column(
+            width = 12,
+            div(
+              style = "background-color: #f0f8ff; padding: 15px; margin-bottom: 20px; border-left: 4px solid #2c3e50; border-radius: 4px;",
+              h4(style = "margin-top: 0;", "How to Use This Tab"),
+              p(
+                strong("Purpose:"), "Explore how prior beliefs combine with observed data to form posterior distributions in binomial models."
+              ),
+              p(
+                strong("Steps:"),
+                tags$ol(
+                  tags$li("Choose your prior type: Continuous (Beta distribution) or Discrete"),
+                  tags$li("For Beta prior: Adjust α and β parameters to reflect your prior belief about the success probability"),
+                  tags$li("Enter your observed data: number of trials and successes"),
+                  tags$li("View how the prior updates to the posterior based on your data")
+                )
+              ),
+              p(
+                strong("Tip:"), "Try different prior parameters to see how 'strong' vs 'weak' priors affect the posterior."
+              )
+            )
+          )
+        ),
         fluidRow(
           column(
             width = 6,

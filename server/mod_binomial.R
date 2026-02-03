@@ -141,8 +141,8 @@ binomialServer <- function(id) {
         cont_data <- results$data
         alpha <- as.numeric(cont_data[3, 2])
         beta <- as.numeric(cont_data[3, 3])
-        mean <- as.numeric(alpha / alpha + beta)
-        sprintf("The point estimate is [%.4f, %.4f].", mean)
+        mean <- as.numeric(alpha / (alpha + beta))
+        sprintf("The point estimate is %.4f.", mean)
         
       }
     }) # end of function for point estimates 

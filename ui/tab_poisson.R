@@ -1,7 +1,7 @@
 poissonUI <- function(id){
   ns <- NS(id)
   tabPanel(
-    "Poison Distribtuion",
+    "Poisson Distribution",
     sidebarLayout(
       sidebarPanel(
         width = 3,
@@ -22,6 +22,31 @@ poissonUI <- function(id){
                   value = "0.2, 0.2, 0.2, 0.2, 0.2")
       ),
       mainPanel(
+        # Helper text section
+        fluidRow(
+          column(
+            width = 12,
+            div(
+              style = "background-color: #f0fff0; padding: 15px; margin-bottom: 20px; border-left: 4px solid #2c3e50; border-radius: 4px;",
+              h4(style = "margin-top: 0;", "How to Use This Tab"),
+              p(
+                strong("Purpose:"), "Learn how Bayesian inference works for count data using the Gamma-Poisson conjugate model."
+              ),
+              p(
+                strong("Steps:"),
+                tags$ol(
+                  tags$li("Choose your prior type: Continuous (Gamma distribution) or Discrete"),
+                  tags$li("For Gamma prior: Set the mean and standard deviation reflecting your prior belief about the rate parameter λ"),
+                  tags$li("Enter your count data: number of observations and total counts"),
+                  tags$li("Observe how the data updates your prior to form the posterior distribution")
+                )
+              ),
+              p(
+                strong("Example:"), "If counting customer arrivals per hour, λ represents the average arrival rate."
+              )
+            )
+          )
+        ),
         fluidRow(
           column(width = 6,
                  h4("Prior Plot"),
@@ -39,7 +64,7 @@ poissonUI <- function(id){
                  ),
           column(width = 6,
                  conditionalPanel(
-                   condition = "input$poission_prior_type =='Continuous (Gamma)'",
+                   condition = "input.poisson_prior_type == 'Continuous (Gamma)'",
                    h4("Confidence Interval Posterior"),
                    plotOutput(ns("ci_plot"))) # conditional only for the Gamma (Continuous) Cases
                  )
