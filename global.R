@@ -6,6 +6,7 @@ library(tidyr)
 library(dplyr)
 library(shinythemes)
 library(learnr)
+library(rsconnect)
 
 # Load custom Bayesian utility functions (extracted from TeachBayes)
 source("R/bayes_utils.R", local = TRUE)
