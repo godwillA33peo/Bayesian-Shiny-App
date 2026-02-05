@@ -1,3 +1,9 @@
+name: Install packages
+        run: |
+          install.packages(c('shiny', 'bslib', 'ggplot2', 'plotly', 'tidyr', 'dplyr', 'shinythemes', 'learnr', 'rsconnect'))
+        shell: Rscript {0}
+
+
 name: Deploy to ShinyApps.io
 
 on:
