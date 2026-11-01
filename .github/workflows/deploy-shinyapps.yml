@@ -22,16 +22,23 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libuv1-dev
 
+      # No repos= here: setup-r (use-public-rspm) points R at Posit Package
+      # Manager, which serves prebuilt Linux binaries. Building from CRAN source
+      # failed on newer runners (fs needs libuv), which silently dropped shiny
+      # from the bundle and broke the live app.
       - name: Install R packages
         run: |
-          install.packages('rsconnect', repos='https://cloud.r-project.org/')
-          install.packages(c('shiny', 'bslib', 'ggplot2', 'plotly', 'tidyr', 'dplyr', 'shinythemes', 'learnr'), repos='https://cloud.r-project.org/')
+          install.packages(c('rsconnect', 'shiny', 'bslib', 'ggplot2', 'plotly', 'tidyr', 'dplyr', 'shinythemes'))
         shell: Rscript {0}
 
-      - name: Verify rsconnect
+      # Stop before deploying if anything the app loads is missing
+      - name: Verify R packages
         run: |
+          pkgs <- c('rsconnect', 'shiny', 'bslib', 'ggplot2', 'plotly', 'tidyr', 'dplyr', 'shinythemes')
+          missing <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
+          if (length(missing)) stop("Missing packages: ", paste(missing, collapse = ", "))
           packageVersion('rsconnect')
         shell: Rscript {0}
 
