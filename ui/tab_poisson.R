@@ -64,7 +64,7 @@ poissonUI <- function(id){
                  ),
           column(width = 6,
                  conditionalPanel(
-                   condition = "input.poisson_prior_type == 'Continuous (Gamma)'",
+                   condition = "input.poisson_prior_type == 'Continuous (Gamma)'", ns = ns,
                    h4("Confidence Interval Posterior"),
                    plotOutput(ns("ci_plot"))) # conditional only for the Gamma (Continuous) Cases
                  )

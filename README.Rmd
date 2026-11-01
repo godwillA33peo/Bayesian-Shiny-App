@@ -40,13 +40,55 @@ This application allows you to interactively explore several common Bayesian mod
 
   * **MCMC Integration:**
 
+
+### Prior Lab (advanced prior experimentation)
+
+A menu of five tabs for choosing, checking and defending priors in real analyses:
+
+  * **Prior Builder:** compare up to four priors from 14 families (Normal, Student-t, Cauchy, Logistic, Laplace, Uniform, Half-Normal, Half-t, Half-Cauchy, Exponential, Gamma, Inverse-Gamma, Log-Normal, Beta). See each prior on its own scale and on the **implied scale** after a link function (probability, odds/rate ratio, variance, precision), with tail probabilities and how much mass sits on extreme values. Export brms, Stan and R code, or download prior draws.
+  * **Elicitation:** turn expert judgement into a prior. Enter 2-5 quantiles (SHELF-style least squares on the CDF) or a mean and SD, fit several families at once, compare the fits, and read back the fitted prior's quantiles as feedback.
+  * **Prior → Posterior & Sensitivity:** any prior (or a robust two-component mixture) with a Binomial, Poisson or Normal likelihood, placed on the natural scale or the link scale (logit / log). The posterior is computed exactly on an adaptive grid. Includes:
+      * equal-tailed or HDI intervals and a Jeffreys/flat reference posterior for comparison
+      * power-scaling sensitivity of prior and likelihood (after Kallioinen et al., 2023) with a plain-language diagnosis
+      * prior predictive check for prior-data conflict
+      * approximate prior effective sample size
+      * posterior weight on each mixture component
+      * Stan and brms code for the same model
+  * **Prior Predictive (regression):** simulate from intercept, slope and residual-SD priors for linear, logistic and Poisson regression with up to 20 standardised predictors, and compare the implied outcomes with what is plausible. Shows how priors on many coefficients compound.
+  * **Hierarchical priors:**
+      * what a prior on the group-level SD τ implies about differences between groups (e.g. odds ratio between top and bottom 10% of modules)
+      * exact partial pooling for the 8 schools model, or your own group estimates, with any prior on τ or τ², Gelman (2006) presets, shrinkage profiles and forest plots
+      * marginal LKJ prior for correlations between random effects
+
+  * **Advanced priors:**
+      * shrinkage priors for many predictors (Normal, Laplace, regularised horseshoe, R2D2, spike-and-slab), showing the R² each implies
+      * Dirichlet priors for shares that sum to 1 (with brms `mo()` and Stan code)
+      * Inverse-Wishart vs LKJ + independent SDs for covariance matrices
+  * **Presets:** 24 documented priors for health (sceptical/enthusiastic trial priors, meta-analysis heterogeneity, survival, diagnostic accuracy), education (effect sizes, between-module variation, Likert cutpoints, IRT) and general use, each with a rationale and reference. Quick builders turn plain statements into priors: "the SD is unlikely to exceed U", "about m, worth n observations", "I'm p sure the effect is within ±d".
+  * **Model Lab:** pick one of 11 data models, use the example data (health and education stories) or upload a CSV, and set a prior for every parameter; the prior inputs update with the model.
+      * Normal, Student-t, log-normal, Gamma, Bernoulli/logistic, Poisson, negative binomial, zero-inflated Poisson, Beta, ordinal (cumulative logit, for Likert items), Weibull survival with censoring; each with an optional predictor
+      * live prior predictive checks, then posterior, posterior predictive checks, trace plots and R-hat / bulk and tail ESS (Vehtari et al., 2021)
+      * an in-app sampler: 4 chains of adaptive Metropolis mixed with an independence proposal, started from the posterior mode; fits take 1-2 seconds
+      * WAIC model comparison (e.g. Poisson vs negative binomial vs zero-inflated)
+      * a complete **Stan program** (with `y_rep` and `log_lik` in generated quantities) and cmdstanr code to run it
+
+The prior families now number 19, including skew-normal, logit-normal, Beta (mean, sample size), Weibull and scaled inverse-χ².
+
+Priors can be saved to a **prior library** in any tab, loaded into any other tab (including the Model Lab and presets), and downloaded/uploaded as CSV.
+
+The maths behind the Prior Lab lives in `R/prior_lab_*.R` (no Shiny code). The test script checks it against closed-form conjugate results, brute-force integration, exact grid posteriors, `lm`/`glm`/`MASS::glm.nb`/`MASS::polr`/`survival::survreg` fits, the `posterior` package's R-hat and ESS, and (when rstan is installed) compiles every generated Stan program:
+
+```r
+Rscript tests/test_prior_lab.R
+```
+
 -----
 
 ## 🛠️ Technical Stack
 
   * **Language:** R
   * **Framework:** [Shiny](https://shiny.posit.co/)
-  * **Bayesian Core:** [TeachBayes](https://bayesball.github.io/TeachBayes/) (for discrete Bayesian tabulation and plotting functions)
+  * **Bayesian Core:** functions adapted from [TeachBayes](https://bayesball.github.io/TeachBayes/) (`R/bayes_utils.R`) and the Prior Lab engine (`R/prior_lab_*.R`, base R only)
   * **Plotting:** [ggplot2](https://ggplot2.tidyverse.org/) (via `TeachBayes`) & [plotly](https://plotly.com/r/)
   * **Data Manipulation:** [dplyr](https://dplyr.tidyverse.org/) (implied by `magrittr` pipe `%>%`)
 

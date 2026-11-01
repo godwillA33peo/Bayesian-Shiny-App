@@ -51,7 +51,8 @@ poissonServer <- function(id) {
         #       "Error: Your prior probabilities must sum upto one")
         #)
         
-        likelihood <- dpois(x= n_counts, lambda = theta)
+        # total count over n_obs units: Y ~ Poisson(n_obs * theta)
+        likelihood <- dpois(x = n_counts, lambda = n_obs * theta)
         product <- prior * likelihood
         posterior <- product /sum(product)
         
@@ -77,7 +78,11 @@ poissonServer <- function(id) {
       my_shape_post <- g_data[3, 2]
       my_rate_post <- g_data[3, 3]
       
-      data <- seq(0, 5, length =50)
+      # x-range wide enough for both prior and posterior (was fixed at 0-5)
+      upper <- max(qgamma(0.995, shape = my_shape, rate = my_rate),
+                   qgamma(0.999, shape = my_shape_post, rate = my_rate_post))
+      upper <- min(upper, 10 * qgamma(0.999, shape = my_shape_post, rate = my_rate_post))
+      data <- seq(0, upper, length.out = 500)[-1]
       postx <- dgamma(data, shape = my_shape_post, rate = my_rate_post)
       prior <- dgamma(data, shape = my_shape, rate = my_rate)
       post_data <- data.frame(x_val = data, prior = prior, posterior = postx)
@@ -110,15 +115,21 @@ poissonServer <- function(id) {
         
       }else{
         
-        results <- data_table()
         g_data <- results$data
-        
         my_shape <- g_data[1, 2]
         my_rate <- g_data[1, 3]
-        
-        data <- seq(0, 5, length =50)
-        prior_plot_data <- dgamma(data, shape = my_shape, rate = my_rate)
-        prior_plot <- plot(data, prior_plot_data, type = "l", col = "blue", lwd=3)
+
+        upper <- qgamma(0.995, shape = my_shape, rate = my_rate)
+        data <- seq(0, upper, length.out = 500)[-1]
+        prior_df <- data.frame(x = data, y = dgamma(data, shape = my_shape, rate = my_rate))
+        # cap the y-axis so a shape < 1 spike at 0 does not flatten the curve
+        cap <- 1.1 * max(prior_df$y[-(1:3)])
+        prior_plot <- ggplot(prior_df, aes(x = x, y = y)) +
+          geom_line(colour = "blue", linewidth = 1.5) +
+          coord_cartesian(ylim = c(0, cap)) +
+          labs(x = "\u03bb (rate)", y = "Density",
+               title = sprintf("Gamma(shape = %.2f, rate = %.3f) prior", my_shape, my_rate)) +
+          theme_minimal(base_size = 14)
         return(prior_plot)
         
       }

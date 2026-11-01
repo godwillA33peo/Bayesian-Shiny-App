@@ -28,7 +28,7 @@ beta_draw <- function(shape_pars){
   x <- NULL
   ggplot(data.frame(x=c(0, 1)), aes(x)) +
     stat_function(fun=dbeta, geom="line",
-                  color="red", size=2.5,
+                  color="red", linewidth=2.5,
                   args=list(shape1=shape_pars[1],
                             shape2=shape_pars[2])) +
       ggtitle(Title) + TH +
@@ -108,11 +108,11 @@ beta_prior_post <- function(prior_shapes, post_shapes,
 x <- NULL
 ggplot(data.frame(x=c(0, 1)), aes(x)) +
   stat_function(fun=dbeta, geom="line",
-                aes(linetype=label_1), size=1.5,
+                aes(linetype=label_1), linewidth=1.5,
                 args=list(shape1=prior_shapes[1],
                           shape2=prior_shapes[2])) +
   stat_function(fun=dbeta, geom="line",
-                aes(linetype=label_2), size=1.5,
+                aes(linetype=label_2), linewidth=1.5,
                 args=list(shape1=post_shapes[1],
                           shape2=post_shapes[2])) +
   scale_colour_manual(values=c("red", "blue")) +
@@ -135,7 +135,7 @@ prior_post_plot <- function(d, Color = "orange"){
    Type <- c(rep("Prior", N), rep("Posterior", N))
    D1 <- data.frame(Model, Probability, Type)
    ggplot(D1, aes(Model, Probability)) +
-     geom_segment(aes(xend = Model, yend = 0), size = Size,
+     geom_segment(aes(xend = Model, yend = 0), linewidth = Size,
                lineend = "butt", color = Color) +
      facet_wrap(~ Type, ncol=1) +
       theme(legend.position = "none")

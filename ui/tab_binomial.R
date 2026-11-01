@@ -61,51 +61,30 @@ binomialUI <- function(id) {
             plotOutput(ns("post_plot"))
           )
         ),
-        fluidRow( # this row outputs 4 or 3 more squares for the estimates and simulations
+        fluidRow( # data table for both prior types; simulation + credible interval for the Beta prior
           column(width = 6,
+                 h4("Data table"),
+                 tableOutput(ns("summary_table")),
+                 # conditionalPanel conditions are JavaScript and need ns = ns inside a module
                  conditionalPanel(
-                   condition = "input$prior_type == 'Continuous (Beta)'",
-                   fluidRow(
-                     
-                     column(width = 12,
-                            h4("Data table"),
-                            tableOutput(ns("summary_table")))
-                     #column(width = 9,
-                     #      h4("Point Estimates")
-                     #     )
-                   ),
-                   fluidRow( # container for the 3rd quadrant with simulated data and inference from the simulations
-                     column(width=12,
-                            conditionalPanel(
-                              condition = "input$prior_type == 'Continuous (Beta)'",
-                              fluidRow(
-                                #condition = "input$prior_type == 'Continuous (Beta)'",
-                                sliderInput(ns("n_sims"), label = "Number of simulations", min = 0,
-                                            max = 100000, step = 10000 , value = 10000)
-                                #textOutput("point_estimates") # single line tetx output for the point estimate for simulated data
-                                
-                              ),
-                              fluidRow(
-                                sliderInput(ns("sim_ci_level"), label = "level",
-                                            min = 0.5, max = 0.99, step = 0.01, value=0.95),
-                                textOutput(ns("sim_ci_level_text"))#single line out put for confidence interval from the simulated data
-                              ),
-                              fluidRow()
-                            )
-                     )
-                   )# end of container for the subdivided quadrant with inference for simulated data 
+                   condition = "input.prior_type == 'Continuous (Beta)'", ns = ns,
+                   h4("Simulation"),
+                   sliderInput(ns("n_sims"), label = "Number of simulations", min = 1000,
+                               max = 100000, step = 1000, value = 10000),
+                   sliderInput(ns("sim_ci_level"), label = "Credible level",
+                               min = 0.5, max = 0.99, step = 0.01, value = 0.95),
+                   textOutput(ns("sim_ci_level_text"))
                  )),
           column(width = 6,
                  conditionalPanel(
-                   condition = "input$prior_type == 'Continuous (Beta)'",
+                   condition = "input.prior_type == 'Continuous (Beta)'", ns = ns,
                    h4("Credible Interval"),
-                   sliderInput(ns("c_level"), "Confidence Interval", min=0.5, max = 0.99,
-                               value=0.95, step=0.01),
+                   sliderInput(ns("c_level"), "Credible level", min = 0.5, max = 0.99,
+                               value = 0.95, step = 0.01),
                    plotOutput(ns("conf_int"))
-                   
                  )
           )
-        )# end if Beta main panel
+        )
     )
    )
   )

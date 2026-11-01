@@ -113,6 +113,29 @@ aboutUI <- function(id) {
           )
         ),
 
+        # Prior Lab
+        div(
+          style = "background-color: #f4f8fd; padding: 20px; margin-bottom: 20px; border-radius: 5px; border-left: 4px solid #2a78d6;",
+          h3("Prior Lab: experimenting with priors"),
+          p(
+            "The ", strong("Prior Lab"), " menu is a workbench for choosing, checking and defending priors in real analyses in health, education ",
+            "or any other field, not only conjugate textbook examples. Everything runs in your session; nothing is stored on the server."
+          ),
+          tags$ul(
+            tags$li(strong("Prior Builder:"), " compare up to four priors from 19 families (including skew-normal, logit-normal, Weibull and scaled inverse-χ²), see what they imply after a link function (log-odds, log-rate), and export brms / Stan / R code."),
+            tags$li(strong("Advanced priors:"), " shrinkage priors for many predictors (horseshoe, R2D2, spike-and-slab), Dirichlet priors for shares, and Inverse-Wishart vs LKJ for covariance matrices."),
+            tags$li(strong("Presets:"), " documented starting points for health, education and general models, with references, plus quick builders (sceptical/enthusiastic trial priors, PC priors, Beta from a mean and sample size, effect-size priors)."),
+            tags$li(strong("Elicitation:"), " turn expert judgements (quantiles or mean and SD) into a fitted prior, with feedback to check the result."),
+            tags$li(strong("Prior → Posterior & Sensitivity:"), " any prior, including robust mixtures, on the natural or link scale; exact grid posteriors; power-scaling sensitivity; prior predictive conflict checks; prior effective sample size."),
+            tags$li(strong("Prior Predictive (regression):"), " simulate outcomes implied by intercept, slope and residual-SD priors in linear, logistic and Poisson regression, and see how priors on many coefficients add up."),
+            tags$li(strong("Hierarchical priors:"), " what a prior on the group-level SD τ implies about differences between groups, exact partial pooling for the 8 schools model (or your own groups), and the LKJ prior for correlations."),
+            tags$li(strong("Model Lab:"), " 11 data models (Normal, Student-t, log-normal, Gamma, Bernoulli, Poisson, negative binomial, zero-inflated Poisson, Beta, ordinal/Likert, Weibull survival with censoring), with your data or examples, a prior for every parameter, prior and posterior predictive checks, MCMC diagnostics, model comparison (WAIC) and a complete Stan program to run in cmdstanr or rstan.")
+          ),
+          p(
+            "Save priors to your ", strong("prior library"), " in any tab and load them in another. Download the library as a CSV to keep it between visits."
+          )
+        ),
+
         # How to Use
         div(
           style = "background-color: #f0fff0; padding: 20px; margin-bottom: 30px; border-radius: 5px;",
@@ -122,7 +145,8 @@ aboutUI <- function(id) {
               tags$li(strong("Start Simple:"), " Begin with the Binomial tab to understand how priors and data interact"),
               tags$li(strong("Experiment:"), " Try different prior parameters - weak vs strong priors, different shapes"),
               tags$li(strong("Compare Models:"), " Explore Poisson and Normal tabs to see how different likelihoods work"),
-              tags$li(strong("Advance to MCMC:"), " Once comfortable with conjugate models, try MCMC for sampling-based inference")
+              tags$li(strong("Advance to MCMC:"), " Once comfortable with conjugate models, try MCMC for sampling-based inference"),
+              tags$li(strong("Go further in the Prior Lab:"), " build, elicit and stress-test priors for your own models, then copy the brms or Stan code")
             )
           )
         ),
