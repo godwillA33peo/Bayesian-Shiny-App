@@ -1,7 +1,7 @@
 normalUI <- function(id) {
   ns <- NS(id)
   tabPanel(
-    "Normal Distribution",
+    "Normal \u00b7 means", value = "normal",
     sidebarLayout(
       sidebarPanel(
         width = 3,

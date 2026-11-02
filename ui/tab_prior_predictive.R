@@ -1,7 +1,7 @@
 priorPredictiveUI <- function(id) {
   ns <- NS(id)
   tabPanel(
-    "Prior Predictive (regression)", value = "prior_predictive",
+    "Prior predictive", value = "prior_predictive",
     sidebarLayout(
       sidebarPanel(
         width = 4,

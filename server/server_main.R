@@ -12,10 +12,14 @@ source("server/mod_prior_hierarchical.R", local = TRUE)
 source("server/mod_model_lab.R",          local = TRUE)
 source("server/mod_prior_advanced.R",     local = TRUE)
 source("server/mod_prior_presets.R",      local = TRUE)
+source("server/mod_home.R",               local = TRUE)
+source("server/mod_basics_intro.R",       local = TRUE)
 
 server <- function(input, output, session) {
+  homeServer("home")
   normalServer("normal")
   poissonServer("poisson")
+  basicsIntroServer("basics_intro")
   binomialServer("binomial")
   mcmcServer("mcmc")
 
@@ -29,4 +33,20 @@ server <- function(input, output, session) {
   modelLabServer("model_lab", prior_library)
   priorAdvancedServer("prior_advanced", prior_library)
   priorPresetsServer("prior_presets", prior_library)
+
+  # In-app navigation: Home cards, overview cards and Back/Next links send
+  # list(page, sub, model, domain) via elements with class "pl-goto"
+  observeEvent(input$pl_goto, {
+    g <- input$pl_goto
+    if (!is.null(g$page)) bslib::nav_select("main_nav", g$page)
+    if (!is.null(g$sub)) {
+      sub_nav <- switch(g$page, basics = "basics_tabs", prior_lab = "prior_lab_tabs", NULL)
+      if (!is.null(sub_nav)) bslib::nav_select(sub_nav, g$sub)
+    }
+    if (!is.null(g$model)) {
+      updateRadioButtons(session, "model_lab-source", selected = "example")
+      updateSelectInput(session, "model_lab-model", selected = g$model)
+    }
+    if (!is.null(g$domain)) updateRadioButtons(session, "prior_presets-domain", selected = g$domain)
+  })
 }

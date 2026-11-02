@@ -1,7 +1,7 @@
 binomialUI <- function(id) {
   ns <- NS(id)
   tabPanel(
-    "Binomial Distribution",
+    "Binomial \u00b7 proportions", value = "binomial",
     sidebarLayout(
       sidebarPanel( 
         width = 3,

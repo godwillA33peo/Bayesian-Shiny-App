@@ -12,6 +12,14 @@ I am developing this project as part of the 'Introduction to Bayesian Modelling'
 
 ## 🎯 Features
 
+The app is organised as a learning path, with five pages in the top bar:
+
+1. **Home:** a live "Bayes in ten seconds" demo, the prior × likelihood ∝ posterior idea, the learning path, and example questions from health and education that jump straight to the right tool.
+2. **Bayesian Basics:** starts with **What is Bayes?**, a teaching tab on what Bayesian statistics is and why it helps (a worked example compared with a p-value, an interactive screening-test demo of Bayes' rule, a "priors wash out" animation, a frequentist vs Bayesian table and a glossary). Then come the Binomial, Poisson and Normal models with conjugate priors, introduced on a "Three models" tab.
+3. **MCMC Simulations:** sampling-based inference with trace plots, densities and diagnostics.
+4. **Prior Lab:** seven tools to explore and check priors (described below).
+5. **Model Lab:** fit 11 data models with your own priors and data, and export Stan code.
+
 This application allows you to interactively explore several common Bayesian models.
 
 ### Current Features
@@ -89,6 +97,7 @@ Rscript tests/test_prior_lab.R
   * **Language:** R
   * **Framework:** [Shiny](https://shiny.posit.co/)
   * **Bayesian Core:** functions adapted from [TeachBayes](https://bayesball.github.io/TeachBayes/) (`R/bayes_utils.R`) and the Prior Lab engine (`R/prior_lab_*.R`, base R only)
+  * **Interface:** [bslib](https://rstudio.github.io/bslib/) (Bootstrap 5 theme and page layout)
   * **Plotting:** [ggplot2](https://ggplot2.tidyverse.org/) (via `TeachBayes`) & [plotly](https://plotly.com/r/)
   * **Data Manipulation:** [dplyr](https://dplyr.tidyverse.org/) (implied by `magrittr` pipe `%>%`)
 

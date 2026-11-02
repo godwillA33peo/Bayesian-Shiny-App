@@ -1,7 +1,7 @@
 priorAdvancedUI <- function(id) {
   ns <- NS(id)
   tabPanel(
-    "Advanced priors (shrinkage, Dirichlet, covariance)", value = "prior_advanced",
+    "Advanced", value = "prior_advanced",
     tabsetPanel(
       type = "tabs",
 
@@ -72,7 +72,7 @@ priorAdvancedUI <- function(id) {
             width = 8,
             pl_help(
               "Dirichlet: a prior for several proportions at once",
-              p("Use it for the shares of a categorical outcome (e.g. how often students use GenAI), mixture weights, or brms monotonic effects (", code("mo()"), "). Each share on its own has a Beta(\u{03b1}\u{2096}, \u{03b1}\u{2080} \u{2212} \u{03b1}\u{2096}) prior.")
+              p("Use it for the shares of a categorical outcome (e.g. how often students use GenAI), mixture weights, or brms monotonic effects (", code("mo()", .noWS = "outside"), "). Each share on its own has a Beta(\u{03b1}\u{2096}, \u{03b1}\u{2080} \u{2212} \u{03b1}\u{2096}) prior.")
             ),
             plotOutput(ns("dir_marg_plot"), height = "300px"),
             plotOutput(ns("dir_draws_plot"), height = "300px"),

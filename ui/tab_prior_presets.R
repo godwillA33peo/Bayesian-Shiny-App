@@ -6,7 +6,7 @@ pl_builder_card <- function(title, ...) {
 priorPresetsUI <- function(id) {
   ns <- NS(id)
   tabPanel(
-    "Presets: health, education, general", value = "prior_presets",
+    "Presets", value = "prior_presets",
     tabsetPanel(
       type = "tabs",
       tabPanel(

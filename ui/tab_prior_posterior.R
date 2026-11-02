@@ -1,7 +1,7 @@
 priorPosteriorUI <- function(id) {
   ns <- NS(id)
   tabPanel(
-    "Prior \u{2192} Posterior & Sensitivity", value = "prior_posterior",
+    "Prior \u{2192} Posterior", value = "prior_posterior",
     sidebarLayout(
       sidebarPanel(
         width = 4,
@@ -52,8 +52,8 @@ priorPosteriorUI <- function(id) {
         width = 8,
         pl_help(
           "Prior \u{2192} Posterior: any prior, exact answers",
-          p("Unlike the conjugate tabs, this one accepts ", strong("any prior family"), ", on the natural scale or on the link scale (log-odds, log-rate), including a two-part ",
-            strong("robust mixture"), ". The posterior is computed exactly on a fine grid, so there is no MCMC error."),
+          p("Unlike the conjugate tabs, this one accepts ", strong("any prior family", .noWS = "after"), ", on the natural scale or on the link scale (log-odds, log-rate), including a two-part ",
+            strong("robust mixture", .noWS = "after"), ". The posterior is computed exactly on a fine grid, so there is no MCMC error."),
           p(strong("Sensitivity"), " re-weights the prior and the likelihood (power-scaling) to show how much your conclusion depends on each. ",
             strong("Prior predictive"), " asks whether data like yours were plausible under the prior, which is a check for prior\u{2013}data conflict.")
         ),

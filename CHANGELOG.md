@@ -1,5 +1,30 @@
 # Changelog
 
+## Teaching tab: "What is Bayes?"
+
+- New first sub-tab under **Bayesian Basics** (`ui/tab_basics_intro.R`, `server/mod_basics_intro.R`) for people new to Bayesian statistics:
+  - the idea in one sentence, and posterior ∝ likelihood × prior
+  - a worked example (9 of 12 students pass vs a 60% baseline) answered both ways: a p-value of about 0.38, against a posterior probability of about 83% that the rate is above 60%, with a 95% credible interval of about 46% to 91%
+  - six reasons Bayesian methods are useful, and what they do not do for free (with links to the Prior Lab, MCMC and Model Lab)
+  - **Bayes' rule with a screening test:** sliders for prevalence, sensitivity and specificity, with results shown as natural frequencies out of 10,000 people
+  - **Priors wash out:** three people with different Beta priors watch the same students' results arrive one at a time (press play); their posteriors converge
+  - a frequentist vs Bayesian comparison table and a glossary of key words
+- The old "Start here" sub-tab is now **Three models**, which focuses on the Binomial, Poisson and Normal models. "Start with the basics" on Home now opens What is Bayes?.
+- On phones, wide tables now scroll inside themselves, and the page no longer scrolls sideways.
+
+## New layout: Home page, learning path and Bootstrap 5
+
+- **Theme:** the app now uses `bslib::page_navbar()` with a Bootstrap 5 theme (`app_theme()` in `R/app_layout.R`) instead of `shinythemes::shinytheme("cosmo")`. The font is Source Sans 3, with a system-font fallback. `shinythemes` is no longer loaded.
+- **Five top-level pages,** in learning-path order: Home · Bayesian Basics · MCMC Simulations · Prior Lab · Model Lab.
+  - **Home** (`ui/tab_home.R`, `server/mod_home.R`) replaces the About tab. It has a live "Bayes in ten seconds" demo, the prior × likelihood ∝ posterior idea, learning-path cards, a "start from your field" section with examples that jump straight to the right tool, counts of what's inside, and a footer with LinkedIn, GitHub and a "How to cite" pop-up.
+  - **Bayesian Basics** groups the Binomial, Poisson and Normal tabs as sub-tabs behind an introductory tab (now "Three models").
+  - **MCMC Simulations** stays on its own, with the old About text on MCMC and convergence in a collapsible panel.
+  - **Prior Lab** opens on an overview of its seven tools, grouped as Explore and Check, with sub-tabs for each.
+  - **Model Lab** moves to the top bar.
+- Every page has a header band ("Step n of 4") and Back / Next links at the bottom.
+- **One navigation mechanism:** any link with class `pl-goto` and `data-page`, `data-sub`, `data-model` or `data-domain` attributes jumps there. See `pl_goto()` in `R/app_layout.R` and the observer in `server/server_main.R`.
+- `ui/tab_about.R` was removed; its content moved to Home, Bayesian Basics and MCMC.
+
 ## Prior Lab, round 2: Model Lab, advanced priors, presets
 
 New tabs in the Prior Lab menu, which is now grouped into "Explore priors", "Check priors" and "Fit models":

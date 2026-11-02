@@ -1,7 +1,7 @@
 poissonUI <- function(id){
   ns <- NS(id)
   tabPanel(
-    "Poisson Distribution",
+    "Poisson \u00b7 counts", value = "poisson",
     sidebarLayout(
       sidebarPanel(
         width = 3,

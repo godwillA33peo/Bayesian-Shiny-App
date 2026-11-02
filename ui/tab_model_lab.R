@@ -30,10 +30,10 @@ modelLabUI <- function(id) {
       mainPanel(
         width = 8,
         pl_help(
-          "Model Lab: from priors to a fitted model and Stan code",
+          "How it works",
           p("Pick a data model, use the example data or upload your own, and set a prior for every parameter. The app checks the priors against your data (",
-            strong("prior predictive"), "), fits the model with its own MCMC sampler (4 chains, adaptive Metropolis, R-hat and ESS as in Stan), checks the fit (",
-            strong("posterior predictive"), "), and writes the ", strong("Stan program"), " so you can run the same model in cmdstanr or rstan."),
+            strong("prior predictive", .noWS = "outside"), "), fits the model with its own MCMC sampler (4 chains, adaptive Metropolis, R-hat and ESS as in Stan), checks the fit (",
+            strong("posterior predictive", .noWS = "outside"), "), and writes the ", strong("Stan program"), " so you can run the same model in cmdstanr or rstan."),
           p(class = "pl-note", "The in-app sampler is meant for exploring priors with small models (up to 3,000 rows). For final analyses run the generated Stan code, which uses Stan's more efficient NUTS sampler.")
         ),
         uiOutput(ns("status")),

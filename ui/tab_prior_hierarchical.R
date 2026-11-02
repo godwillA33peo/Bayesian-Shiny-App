@@ -6,7 +6,7 @@ PL_EIGHT_SCHOOLS_TEXT <- paste(
 priorHierUI <- function(id) {
   ns <- NS(id)
   tabPanel(
-    "Hierarchical priors", value = "prior_hier",
+    "Hierarchical", value = "prior_hier",
     tabsetPanel(
       type = "tabs",
 
